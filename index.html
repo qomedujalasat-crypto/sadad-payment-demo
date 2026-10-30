@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>سامانه متمرکز لینک پرداخت | نسخه آزمایشی</title>
+<style>
+:root{font-family:Tahoma,Arial,sans-serif;color:#172033;background:#f3f6fb}*{box-sizing:border-box}body{margin:0}.top{background:linear-gradient(120deg,#102b52,#176b87);color:white;padding:28px 18px}.wrap{max-width:1050px;margin:auto;padding:0 16px}.top h1{margin:0 0 10px;font-size:25px}.top p{margin:0;color:#dceaf3;line-height:1.9}.notice{margin:22px auto;background:#fff7df;border:1px solid #f1d58b;color:#694d08;padding:14px 17px;border-radius:12px;line-height:1.9}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px auto 36px}.panel{background:white;border:1px solid #e4eaf1;border-radius:15px;padding:20px;box-shadow:0 5px 20px #132b4b0b}.panel h2{font-size:18px;margin:0 0 18px}.field{margin:13px 0}.field label{display:block;font-size:13px;margin-bottom:7px;color:#44516a}.field input,.field textarea,.field select{width:100%;padding:12px;border:1px solid #ccd6e2;border-radius:9px;font:inherit;background:#fff}.field textarea{min-height:75px;resize:vertical}button{border:0;border-radius:9px;padding:12px 17px;font:inherit;cursor:pointer;background:#176b87;color:#fff}button.secondary{background:#e8eef5;color:#23344d}button:disabled{opacity:.5;cursor:not-allowed}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.result{margin-top:15px;padding:14px;background:#f2f7fa;border-radius:10px;line-height:1.9;overflow-wrap:anywhere}.hidden{display:none}.status{font-weight:bold}.success{color:#087443}.failed{color:#b42318}.cancel{color:#9a6700}.muted{color:#6c788c;font-size:12px;line-height:1.8}.list{display:grid;gap:10px}.item{border:1px solid #e3e9f0;padding:12px;border-radius:10px}.item strong{display:block;margin-bottom:6px}.footer{text-align:center;color:#738096;padding:0 12px 30px;font-size:12px}@media(max-width:720px){.grid{grid-template-columns:1fr}.top h1{font-size:21px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><h1>سامانه متمرکز لینک پرداخت</h1><p>نمونه اولیه برای بررسی گردش کار ایجاد و پیگیری لینک پرداخت بین سامانه‌های مستقل<br>درگاه هدف در نسخه عملیاتی: پرداخت الکترونیک سداد (بانک ملی ایران)</p></div></header>
+<main class="wrap">
+<div class="notice"><strong>هشدار مهم:</strong> این وب‌سایت صرفاً شبیه‌ساز نمایشی است. هیچ تراکنش واقعی انجام نمی‌شود، به سداد متصل نیست و وضعیت‌های پرداخت فقط به‌صورت محلی و آزمایشی تولید می‌شوند. اطلاعات کارت، رمز، CVV2 یا رمز پویا وارد نکنید.</div>
+<div class="grid">
+<section class="panel">
+<h2>۱) ایجاد لینک آزمایشی</h2>
+<form id="createForm">
+<div class="field"><label for="title">عنوان پرداخت</label><input id="title" required maxlength="90" placeholder="مثلاً هزینه ثبت‌نام"></div>
+<div class="field"><label for="amount">مبلغ (ریال)</label><input id="amount" required type="number" min="1000" step="1" placeholder="مثلاً 1500000"></div>
+<div class="field"><label for="reference">شناسه درخواست سامانه مبدأ (اختیاری)</label><input id="reference" maxlength="80" placeholder="ORDER-10025"></div>
+<div class="field"><label for="description">توضیحات (اختیاری)</label><textarea id="description" maxlength="300" placeholder="توضیح کوتاه درباره پرداخت"></textarea></div>
+<button type="submit">ساخت لینک آزمایشی</button>
+</form>
+<div id="created" class="result hidden" aria-live="polite"></div>
+</section>
+<section class="panel">
+<h2>۲) شبیه‌سازی صفحه پرداخت</h2>
+<p class="muted">پس از ساخت لینک، آن را از فهرست انتخاب کنید. سپس یکی از نتیجه‌های ساختگی را ثبت کنید.</p>
+<div class="field"><label for="paymentSelect">درخواست آزمایشی</label><select id="paymentSelect"><option value="">ابتدا یک لینک بسازید</option></select></div>
+<div id="paymentInfo" class="result">هنوز درخواستی انتخاب نشده است.</div>
+<div class="row" style="margin-top:14px">
+<button id="successBtn" disabled>شبیه‌سازی پرداخت موفق</button>
+<button id="failBtn" class="secondary" disabled>شبیه‌سازی پرداخت ناموفق</button>
+<button id="cancelBtn" class="secondary" disabled>انصراف از پرداخت</button>
+</div>
+<p class="muted">این دکمه‌ها فقط وضعیت نمایشی را تغییر می‌دهند و هیچ ارتباط شبکه‌ای یا مالی ندارند.</p>
+</section>
+<section class="panel">
+<h2>۳) نتیجه و سوابق</h2>
+<div id="history" class="list"><p class="muted">هنوز لینکی ساخته نشده است.</p></div>
+</section>
+<section class="panel">
+<h2>۴) معماری نسخه واقعی</h2>
+<ul style="padding-right:20px;line-height:2">
+<li>سامانه مبدأ از طریق API امن، درخواست پرداخت ایجاد می‌کند.</li>
+<li>سرور مرکزی مبلغ و شناسه درخواست را اعتبارسنجی و در پایگاه داده ثبت می‌کند.</li>
+<li>سرور مرکزی با اطلاعات پذیرندگی محرمانه، درخواست را به سداد ارسال می‌کند.</li>
+<li>کاربر به صفحه پرداخت می‌رود؛ نتیجه بازگشت به‌تنهایی معتبر تلقی نمی‌شود.</li>
+<li>سرور مرکزی تراکنش را سمت سرور از سداد استعلام/تأیید می‌کند.</li>
+<li>پس از تأیید قطعی، نتیجه امضاشده یا احرازشده به سامانه مبدأ اطلاع داده می‌شود.</li>
+</ul>
+<p class="muted">نام فیلدها، آدرس‌ها و جزئیات فنی باید دقیقاً مطابق مستندات رسمی و قرارداد پذیرندگی سداد پیاده‌سازی شوند.</p>
+</section>
+</div>
+</main>
+<div class="footer">نسخه نمایشی — بدون اتصال به شبکه بانکی — داده‌ها فقط در مرورگر فعلی نگهداری می‌شوند.</div>
+<script>
+const $=id=>document.getElementById(id);
+let payments=[];
+try{payments=JSON.parse(localStorage.getItem('sadadDemoPayments')||'[]')}catch(e){payments=[]}
+let selected='';
+const money=n=>Number(n).toLocaleString('fa-IR')+' ریال';
+const save=()=>localStorage.setItem('sadadDemoPayments',JSON.stringify(payments));
+const statusText=s=>s==='success'?'موفق (آزمایشی)':s==='failed'?'ناموفق (آزمایشی)':s==='cancelled'?'لغو شده (آزمایشی)':'در انتظار (آزمایشی)';
+function render(){
+ const select=$('paymentSelect');select.innerHTML='<option value="">یک درخواست را انتخاب کنید</option>';
+ payments.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.title+' — '+money(p.amount);select.appendChild(o)});
+ $('history').innerHTML=payments.length?'':'<p class="muted">هنوز لینکی ساخته نشده است.</p>';
+ payments.slice().reverse().forEach(p=>{const d=document.createElement('div');d.className='item';d.innerHTML='<strong></strong><span></span><div class="muted"></div>';d.children[0].textContent=p.title;d.children[1].textContent=money(p.amount)+' | '+statusText(p.status);d.children[2].textContent='شناسه: '+p.id+' | مرجع مبدأ: '+(p.reference||'—');$('history').appendChild(d)});
+ if(selected){select.value=selected;showSelected()}else{$('paymentInfo').textContent='هنوز درخواستی انتخاب نشده است.';buttons(false)}
+}
+function buttons(on){['successBtn','failBtn','cancelBtn'].forEach(id=>$(id).disabled=!on)}
+function showSelected(){const p=payments.find(x=>x.id===selected);if(!p){buttons(false);return}$('paymentInfo').innerHTML='';const b=document.createElement('div');b.innerHTML='<strong></strong><div></div><div></div><div class="muted"></div>';b.children[0].textContent=p.title;b.children[1].textContent='مبلغ: '+money(p.amount);b.children[2].textContent='وضعیت: '+statusText(p.status);b.children[3].textContent='شناسه آزمایشی: '+p.id;$('paymentInfo').appendChild(b);buttons(p.status==='pending')}
+$('createForm').addEventListener('submit',e=>{e.preventDefault();const title=$('title').value.trim(),amount=Number($('amount').value);if(!title||!Number.isSafeInteger(amount)||amount<1000){alert('عنوان و مبلغ معتبر وارد کنید.');return}const p={id:'DEMO-'+Date.now().toString(36).toUpperCase(),title,amount,reference:$('reference').value.trim(),description:$('description').value.trim(),status:'pending',createdAt:new Date().toISOString()};payments.push(p);selected=p.id;save();render();const url=location.href.split('#')[0]+'#'+encodeURIComponent(p.id);$('created').classList.remove('hidden');$('created').innerHTML='لینک آزمایشی ساخته شد:<br><strong></strong><div class="row" style="margin-top:10px"><button type="button" id="copyLink" class="secondary">کپی لینک</button></div><p class="muted">این آدرس فقط برای نمایش است و درگاه پرداخت واقعی نیست.</p>';$('created').querySelector('strong').textContent=url;$('copyLink').onclick=()=>navigator.clipboard?.writeText(url).then(()=>alert('لینک کپی شد.')).catch(()=>alert('کپی خودکار ممکن نشد؛ لینک را دستی کپی کنید.'));});
+$('paymentSelect').addEventListener('change',e=>{selected=e.target.value;showSelected()});
+function setStatus(status){const p=payments.find(x=>x.id===selected);if(!p||p.status!=='pending')return;p.status=status;save();render()}
+$('successBtn').onclick=()=>setStatus('success');$('failBtn').onclick=()=>setStatus('failed');$('cancelBtn').onclick=()=>setStatus('cancelled');
+render();
+</script>
+</body></html>
